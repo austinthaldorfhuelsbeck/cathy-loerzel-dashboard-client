@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Blogs() {
+export default function BlogsGrid() {
   return (
     <div>
-      BLOGS
+      Blogs Grid
     </div>
   )
 }

@@ -5,8 +5,13 @@ import App from "./App"
 // layout
 
 import Dashboard from "./layouts/Dashboard"
-import Blogs from "./layouts/Blogs"
 import Events from "./layouts/Events"
+import Blog from "./layouts/Blog"
+
+// components
+
+import BlogForm from "./components/Forms/BlogForm"
+import BlogsGrid from "./components/Grids/BlogsGrid"
 
 const rootElement = document.getElementById("root")
 render(
@@ -14,7 +19,11 @@ render(
     <Routes>
       <Route path="/" element={<App />}>
         <Route index element={<Dashboard />} />
-        <Route path="blogs" element={<Blogs />} />
+        <Route path="blogs">
+          <Route path="new" element={<BlogForm />} />
+          <Route path=":blogId" element={<Blog />} />
+          <Route index element={<BlogsGrid />} />
+        </Route>
         <Route path="events" element={<Events />} />
         <Route path="*" element={<h1>NOT FOUND</h1>} />
       </Route>

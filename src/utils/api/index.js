@@ -27,9 +27,9 @@ async function fetchJson(url, options) {
   try {
     const response = await fetch(url, options);
     if (response.status < 200 || response.status > 399) {
-      throw new Error(`${response.status} - ${response.statusText}`);
+      throw new Error(`${response.status} - ${response.statusText}`)
     }
-    return await response.json();
+    return await response.json()
   } catch (error) {
     if (error.name !== "AbortError") {
       throw error;
@@ -44,5 +44,70 @@ async function fetchJson(url, options) {
  */
 export async function listBlogs(signal) {
   const url = `${API_BASE_URL}/blogs`
+  return await fetchJson(url, { signal })
+}
+
+/**
+ * Saves blog to the database.
+ * Validation will be performed at the API level.
+ * @param blog
+ *  the blog to save
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<blog>}
+ *  a promise that resolves the saved blog, which will now have an `id` property.
+ */
+ export async function createBlog(blog, signal) {
+  const url = `${API_BASE_URL}/blogs`
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify(blog),
+    signal,
+  }
+  return await fetchJson(url, options);
+}
+
+/**
+ * Retrieves the blog with the specified `blogId`
+ * @param blogId
+ *  the `id` property matching the desired blog.
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<any>}
+ *  a promise that resolves to the saved blog.
+ */
+ export async function readBlog(blogId, signal) {
+  const url = `${API_BASE_URL}/blogs/${blogId}`
+  return await fetchJson(url, { signal })
+}
+
+/**
+ * Updates an existing blog
+ * @param updatedBlog
+ *  the blog to save, which must have an `id` property.
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the updated blog.
+ */
+export async function updateBlog(updatedBlog, signal) {
+  const url = `${API_BASE_URL}/blogs/${updatedBlog.blog_id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(updatedBlog),
+    signal,
+  }
+  return await fetchJson(url, options);
+}
+
+/**
+ * Retrieves all existing events.
+ * @returns {Promise<[event]>}
+ *  a promise that resolves to a possibly empty array of events saved in the database.
+ */
+ export async function listEvents(signal) {
+  const url = `${API_BASE_URL}/events`
   return await fetchJson(url, { signal })
 }
