@@ -5,13 +5,15 @@ import App from "./App"
 // layout
 
 import Dashboard from "./layouts/Dashboard"
-import Events from "./layouts/Events"
+import Event from "./layouts/Event"
 import Blog from "./layouts/Blog"
 
 // components
 
 import BlogForm from "./components/Forms/BlogForm"
 import BlogsGrid from "./components/Grids/BlogsGrid"
+import EventForm from "./components/Forms/EventForm"
+import EventsGrid from "./components/Grids/EventsGrid"
 
 const rootElement = document.getElementById("root")
 render(
@@ -24,7 +26,11 @@ render(
           <Route path=":blogId" element={<Blog />} />
           <Route index element={<BlogsGrid />} />
         </Route>
-        <Route path="events" element={<Events />} />
+        <Route path="events">
+          <Route path="new" element={<EventForm />} />
+          <Route path=":eventId" element={<Event />} />
+          <Route index element={<EventsGrid />} />
+        </Route>
         <Route path="*" element={<h1>NOT FOUND</h1>} />
       </Route>
     </Routes>

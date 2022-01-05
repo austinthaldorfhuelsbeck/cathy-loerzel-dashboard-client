@@ -111,3 +111,70 @@ export async function updateBlog(updatedBlog, signal) {
   const url = `${API_BASE_URL}/events`
   return await fetchJson(url, { signal })
 }
+
+/**
+ * Saves event to the database.
+ * Validation will be performed at the API level.
+ * @param event
+ *  the event to save
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<event>}
+ *  a promise that resolves the saved event, which will now have an `id` property.
+ */
+ export async function createEvent(event, signal) {
+  const url = `${API_BASE_URL}/events`
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify(event),
+    signal,
+  }
+  return await fetchJson(url, options);
+}
+
+/**
+ * Retrieves the event with the specified `eventId`
+ * @param eventId
+ *  the `id` property matching the desired event.
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<any>}
+ *  a promise that resolves to the saved event.
+ */
+ export async function readEvent(eventId, signal) {
+  const url = `${API_BASE_URL}/events/${eventId}`
+  return await fetchJson(url, { signal })
+}
+
+/**
+ * Updates an existing event
+ * @param updatedEvent
+ *  the event to save, which must have an `id` property.
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the updated event.
+ */
+export async function updateEvent(updatedEvent, signal) {
+  const url = `${API_BASE_URL}/events/${updatedEvent.event_id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(updatedEvent),
+    signal,
+  }
+  return await fetchJson(url, options);
+}
+
+export async function deleteEvent(eventId, signal) {
+  const url = `${API_BASE_URL}/events/${eventId}`
+  const options = { method: "DELETE", signal }
+  return await fetchJson(url, options)
+}
+
+export async function deleteBlog(blogId, signal) {
+  const url = `${API_BASE_URL}/blogs/${blogId}`
+  const options = { method: "DELETE", signal }
+  return await fetchJson(url, options)
+}

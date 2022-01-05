@@ -6,8 +6,7 @@ import { listBlogs, listEvents } from "../utils/api"
 // Components
 import CreateBlogButton from "../components/Buttons/CreateBlogButton"
 import CreateEventButton from "../components/Buttons/CreateEventButton"
-import BlogsList from "../components/Lists/BlogsList"
-import EventsList from "../components/Lists/EventsList"
+import ItemsList from "../components/Lists/ItemsList"
 
 export default function Dashboard() {
   
@@ -34,10 +33,12 @@ export default function Dashboard() {
       <CreateEventButton />
       <div className="row my-5">
         <div className="col col-md-6">
-          <BlogsList blogs={blogs} />
+          <h2>Blogs</h2>
+          <ItemsList selectedList="blogs" items={blogs} preview={true} />
         </div>
         <div className="col col-md-6">
-          <EventsList events={events} />
+          <h2>Events</h2>
+          <ItemsList selectedList="events" items={events} preview={true} />
         </div>
       </div>
     </div>
