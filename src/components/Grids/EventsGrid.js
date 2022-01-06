@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import CreateEventButton from "../Buttons/CreateEventButton"
 
 // API methods
 import { listEvents } from "../../utils/api"
@@ -19,6 +20,7 @@ export default function EventsGrid() {
 
   return (
     <div>
+      <CreateEventButton />
       <ItemsList selectedList="events" items={events} preview={false} />
     </div>
   )

@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from "react"
+// Dependencies
+import { useState, useEffect } from "react"
+
+// Components
+import CreateBlogButton from "../Buttons/CreateBlogButton"
 
 // API methods
 import { listBlogs } from "../../utils/api"
@@ -19,6 +23,7 @@ export default function BlogsGrid() {
 
   return (
     <div>
+      <CreateBlogButton />
       <ItemsList selectedList="blogs" items={blogs} preview={false} />
     </div>
   )

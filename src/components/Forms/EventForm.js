@@ -6,7 +6,8 @@ export default function EventForm(props = {
   event_id: null,
   name: "",
   date: "",
-  content: ""
+  content: "",
+  url: ""
 }) {
 
   // Find the event ID, if it exists
@@ -84,6 +85,17 @@ export default function EventForm(props = {
             name="date"
             onChange={handleChange}
             value={formData.date}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="url">URL</label>
+          <input
+            className="form-control"
+            type="text"
+            placeholder="e.g. https://theallendercenter.org/events/2726298"
+            name="url"
+            onChange={handleChange}
+            value={formData.url}
           />
         </div>
         <div className="form-group">
