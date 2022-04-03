@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react"
 import { listBlogs, listEvents } from "../utils/api"
 
 // Components
-import CreateBlogButton from "../components/Buttons/CreateBlogButton"
-import CreateEventButton from "../components/Buttons/CreateEventButton"
 import ItemsList from "../components/Lists/ItemsList"
 
 export default function Dashboard() {
@@ -29,8 +27,6 @@ export default function Dashboard() {
 
   return (
     <div className="container home">
-      <CreateBlogButton />
-      <CreateEventButton />
       <div className="row my-5">
         <div className="col col-md-6">
           <h2>Blogs</h2>

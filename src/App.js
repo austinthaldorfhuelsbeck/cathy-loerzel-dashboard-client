@@ -1,17 +1,19 @@
 import { Outlet } from "react-router-dom"
 import DashboardHeader from "./components/Headers/DashboardHeader"
+import DashboardSidebar from "./components/Sidebars/DashboardSidebar"
 
-export default function App() {
-  // PROPS
-  const headerProps = {
-    title: "Admin Dashboard",
-    content: "Cathy Loerzel"
-  }  
-  
+export default function App() {  
   return (
     <div>
-      <DashboardHeader {...headerProps} />
-      <Outlet />
+      <DashboardHeader />
+      <div className="container-fluid">
+        <div className="row">
+          <DashboardSidebar />
+          <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <Outlet />
+          </main>
+        </div>
+      </div>
     </div>
   )
 }
