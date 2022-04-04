@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom"
 import DashboardHeader from "./components/Headers/DashboardHeader"
 import DashboardSidebar from "./components/Sidebars/DashboardSidebar"
 
+import "./App.css"
+
 export default function App() {  
   return (
     <div>

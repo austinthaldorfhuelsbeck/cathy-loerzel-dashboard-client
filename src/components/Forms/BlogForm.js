@@ -70,166 +70,111 @@ export default function BlogForm(props = {
     navigate("/")
   }
 
+  // Header image
+  const headerImage = formData.img && (
+    <img className="preview-header" src={formData.img} alt="Header 200px preview" />
+  )
+
+  // Form group classes
+  const inputGroup = (name, title, placeholder, value) => (
+    <div className="form-group py-1">
+      <label htmlFor={name}><strong>{title}</strong></label>
+      <input
+        className="form-control my-1"
+        type="text"
+        placeholder={placeholder}
+        name={name}
+        onChange={handleChange}
+        value={value}
+      />
+    </div>
+  )
+  const textAreaGroup = (name, title, placeholder, value) => (
+    <div className="form-group py-1">
+      <label htmlFor={name}><strong>{title}</strong></label>
+        <textarea
+          className="form-control my-1"
+          rows="8"
+          placeholder={placeholder}
+          name="text"
+          onChange={handleChange}
+          value={value}
+        />
+    </div>
+  )
+  const controlGroup = (name, title, options, value) => (
+    <div className="form-group py-1">
+      <label htmlFor={name}><strong>{title}</strong></label>
+      <select
+        className="form-control my-1"
+        name={name}
+        onChange={handleChange}
+        value={value}
+      >
+        <option>{`--Choose a ${name}--`}</option>
+        {options.map((option) => <option key={option}>{option}</option>)}
+      </select>
+    </div>
+  )
+
+  // Conditional URL rendering
+  const conditionalURL = (
+    <>
+      {formData.category === "podcasts" && inputGroup("audio", "Audio URL *", "Full url of the podcast audio", formData.audio)}
+      {formData.category === "teaching" && inputGroup("video", "Video URL *", "Full url of the lesson video", formData.video)}
+    </>
+  )
+
   return (
     <>
+      {headerImage}
       <form className="p-5" onSubmit={handleSubmit} noValidate>
-        <div className="form-group">
-          <label htmlFor="title">Title</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="Title of the blog post"
-            name="title"
-            onChange={handleChange}
-            value={formData.title}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="blog_id">(Optional) Blog ID</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="ID used in the blog's URL"
-            name="blog_id"
-            onChange={handleChange}
-            value={formData.blog_id}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="order">Order #</label>
-          <input
-            className="form-control"
-            type="number"
-            placeholder="(optional) Order # for sorting"
-            name="order"
-            onChange={handleChange}
-            value={formData.order}
-          />
-        </div>
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            placeholder="Check if featured"
-            name="featured"
-            onChange={handleChange}
-            value={formData.featured}
-          />
-          <label className="form-check-label" htmlFor="featured">
-            Featured
-          </label>
-        </div>
-        <div className="form-group">
-          <label htmlFor="category">Category</label>
-          <select
-            className="form-control"
-            name="category"
-            onChange={handleChange}
-            value={formData.category}
-          >
-            <option>writing</option>
-            <option>podcasts</option>
-            <option>teaching</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="topic">Topic</label>
-          <select
-            className="form-control"
-            name="topic"
-            onChange={handleChange}
-            value={formData.topic}
-          >
-            <option>redeeming-heartache</option>
-            <option>leadership</option>
-            <option>sexual-abuse</option>
-            <option>allender-methodology</option>
-            <option>spiritual-warfare</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="date">Date</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="e.g. September 1, 1991"
-            name="date"
-            onChange={handleChange}
-            value={formData.date}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="text">Description</label>
-          <textarea
-            className="form-control"
-            rows="5"
-            placeholder="Brief description of the blog post"
-            name="text"
-            onChange={handleChange}
-            value={formData.text}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="img">Image URL</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="Full url of the hero image"
-            name="img"
-            onChange={handleChange}
-            value={formData.img}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="audio">Audio URL</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="Full url of the podcast audio"
-            name="audio"
-            onChange={handleChange}
-            value={formData.audio}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="video">Video URL</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="Full url of the lesson video"
-            name="video"
-            onChange={handleChange}
-            value={formData.video}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="video">Post URL</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="Clickthrough URL for the post"
-            name="url"
-            onChange={handleChange}
-            value={formData.url}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="content">Content</label>
-          <textarea
-            className="form-control"
-            rows="5"
-            placeholder="HTML content of the post"
-            name="content"
-            onChange={handleChange}
-            value={formData.content}
-          />
-        </div>
+
         <div className="row">
+          <h3>Basic Info</h3>
+          <hr />
+          <div className="col col-md-6">
+            {inputGroup("title", "Title *", "Title of the blog post", formData.title)}
+            {inputGroup("blog_id", "Blog ID", "ID used in the blog's URL", formData.blog_id)}
+            <p className="text-muted"><em>Automatically generated from the title if left blank.</em></p>
+          </div>
+          <div className="col col-md-6">
+            {controlGroup("category", "Category *", ["writing", "podcasts", "teaching"], formData.category)}
+            {controlGroup(
+              "topic",
+              "Topic *",
+              ["redeeming-heartache", "leadership", "sexual-abuse", "allender-methodology", "spiritual-warfare"],
+              formData.topic
+            )}
+            {inputGroup("date", "Date", "e.g. September 1, 1991", formData.date)}
+            <p className="text-muted"><em>Defaults to today if left blank.</em></p>
+          </div>
+        </div>
+
+        <div className="row">
+          <h3>Details</h3>
+          <hr />
+          {inputGroup("img", "Image URL *", "Full URL of the hero image", formData.img)}
+          <p className="text-muted"><em>Enter the address for the thumbnail image that will display with the post.</em></p>
+          {inputGroup("url", "Post URL *", "Clickthrough URL for the post", formData.url)}
+          <p className="text-muted"><em>When the thumbnail image is clicked, it links here.</em></p>
+          {conditionalURL}
+          {textAreaGroup("text", "Description *", "A brief description of the post.", formData.text)}
+          <p className="text-muted"><em>This could be the first paragraph of the post. Automatically shortened to 250 characters for the preview.</em></p>
+        </div>
+
+        <div className="row">
+          <h3>Content</h3>
+          <hr />
+          {textAreaGroup("content", "", "HTML content of the post.", formData.content)}
+        </div>
+
+        <div className="row py-3">
           <div className="col col-6">
             <button onClick={handleCancel} className="btn btn-secondary mx-1">
               Cancel
             </button>
-            <button type="submit" className="btn btn-primary mx-1">
+            <button type="submit" className="btn btn-dark mx-1">
               Submit
             </button>
           </div>
@@ -240,6 +185,7 @@ export default function BlogForm(props = {
           </div>
         </div>
       </form>
+
       {success && (
         <div className="alert alert-success" role="alert">
           {`Success! Blog ID: ${success}`}

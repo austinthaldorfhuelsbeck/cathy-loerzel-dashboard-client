@@ -5,11 +5,11 @@ export default function DashboardSidebar() {
             href: "/"
         },
         {
-            title: "Blogs",
+            title: "All Blogs",
             href: "/blogs"
         },
         {
-            title: "Events",
+            title: "All Events",
             href: "/events"
         }
     ];
