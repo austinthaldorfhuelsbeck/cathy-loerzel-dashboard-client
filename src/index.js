@@ -28,7 +28,7 @@ SuperTokens.init({
   appInfo: {
       appName: "Cathy Admin Dashboard",
       apiDomain: process.env.REACT_APP_API_BASE_URL,
-      websiteDomain: "http://localhost:3000",
+      websiteDomain: "http://cathy-loerzel-dashboard-client.vercel.app/",
       apiBasePath: "/auth",
       websiteBasePath: "/login"
   },
