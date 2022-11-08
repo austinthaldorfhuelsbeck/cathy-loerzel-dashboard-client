@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams, useNavigate, Link } from "react-router-dom"
 import { updateEvent, createEvent, deleteEvent } from "../../utils/api"
 

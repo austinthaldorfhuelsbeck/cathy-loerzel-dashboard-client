@@ -1,5 +1,5 @@
 // Dependencies
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 // API methods
 import { listBlogs } from "../../utils/api";

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Outlet } from "react-router-dom"
 import DashboardHeader from "./components/Headers/DashboardHeader"
 import DashboardSidebar from "./components/Sidebars/DashboardSidebar"

@@ -1,3 +1,4 @@
+import React from 'react';
 // Components
 import LoadMoreButton from "../Buttons/LoadMoreButton"
 import BlogCard from "../Cards/BlogCard"

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function DashboardHeader() {
   return (
     <nav className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
