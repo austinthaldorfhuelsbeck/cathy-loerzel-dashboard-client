@@ -76,45 +76,66 @@ export default function EventForm(props = {
     navigate("/")
   }
 
+  // Form group classes
+  const inputGroup = (name, title, placeholder, value) => (
+    <div className="form-group py-1">
+      <label htmlFor={name}><strong>{title}</strong></label>
+      <input
+        className="form-control my-1"
+        type="text"
+        placeholder={placeholder}
+        name={name}
+        onChange={handleChange}
+        value={value}
+      />
+    </div>
+  )
+  const textAreaGroup = (name, title, placeholder, value) => (
+    <div className="form-group py-1">
+      <label htmlFor={name}><strong>{title}</strong></label>
+      <textarea
+        className="form-control my-1"
+        rows="8"
+        placeholder={placeholder}
+        name="text"
+        onChange={handleChange}
+        value={value}
+      />
+    </div>
+  )
+  const controlGroup = (name, title, options, value) => (
+    <div className="form-group py-1">
+      <label htmlFor={name}><strong>{title}</strong></label>
+      <select
+        className="form-control my-1"
+        name={name}
+        onChange={handleChange}
+        value={value}
+      >
+        <option>{`--Choose a ${name}--`}</option>
+        {options.map((option) => <option key={option}>{option}</option>)}
+      </select>
+    </div>
+  )
+
   return (
     <>
       <form className="p-5" onSubmit={handleSubmit} noValidate>
-        <div className="form-group">
-          <label htmlFor="name">Event Name</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="e.g. Redeeming Heartache Conference"
-            name="name"
-            onChange={handleChange}
-            value={formData.name}
-          />
+
+        <div className="row">
+          {inputGroup("name", "Event Name *", "e.g. Redeeming Heartache Conference", formData.name)}
         </div>
-        <div className="form-group">
-          <label>Date</label>
-          <DatePicker selected={startDate} onChange={handleDateChange} />
+        <div className="row">
+          <div className="col col-md-3 py-1">
+            <label><strong>Date *</strong></label>
+            <DatePicker className="form-control" selected={startDate} onChange={handleDateChange} />
+          </div>
+          <div className="col">
+            {inputGroup("url", "URL *", "e.g. https://theallendercenter.org/events/2726298", formData.url)}
+          </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="url">URL</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="e.g. https://theallendercenter.org/events/2726298"
-            name="url"
-            onChange={handleChange}
-            value={formData.url}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="content">Description</label>
-          <textarea
-            className="form-control"
-            rows="5"
-            placeholder="Add a description of the event here."
-            name="content"
-            onChange={handleChange}
-            value={formData.content}
-          />
+        <div className="row">
+          {textAreaGroup("content", "Description *", "Add a description of the event here.", formData.content)}
         </div>
         <div className="row my-4">
           <div className="col col-6">
