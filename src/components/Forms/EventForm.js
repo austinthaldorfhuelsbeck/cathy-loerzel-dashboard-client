@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react"
+import DatePicker from "react-datepicker"
 import { useParams, useNavigate, Link } from "react-router-dom"
 import { updateEvent, createEvent, deleteEvent } from "../../utils/api"
+
+import "react-datepicker/dist/react-datepicker.css"
 
 export default function EventForm(props = {
   event_id: null,
   name: "",
-  date: "",
   content: "",
   url: ""
 }) {
@@ -22,7 +24,11 @@ export default function EventForm(props = {
   // Load initial data if updating
   // (Blank if creating new)
   const [formData, setFormData] = useState({})
-  useEffect(() => setFormData(props), [props])
+  const [startDate, setStartDate] = useState(new Date())
+  useEffect(() => {
+    setFormData(props)
+    if (props.date) setStartDate(new Date(props.date))
+  }, [props])
 
   //// HANDLERS ////
 
@@ -30,6 +36,7 @@ export default function EventForm(props = {
   // depending if there is a param found
   const handleSubmit = (e) => {
     e.preventDefault()
+    formData.date = startDate
     if (eventId) {
       updateEvent({ ...formData })
         .then((event) => setSuccess(event.data.event_id))
@@ -53,7 +60,14 @@ export default function EventForm(props = {
   const handleChange = ({ target }) => {
     setFormData({
       ...formData,
-      [target.name]: target.value,
+      [target.name]: target.value
+    })
+  }
+  const handleDateChange = (date) => {
+    setStartDate(date)
+    setFormData({
+      ...formData,
+      date: startDate
     })
   }
   // Cancel navigates home
@@ -77,15 +91,8 @@ export default function EventForm(props = {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="date">Date</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="e.g. September 1, 1991"
-            name="date"
-            onChange={handleChange}
-            value={formData.date}
-          />
+          <label>Date</label>
+          <DatePicker selected={startDate} onChange={handleDateChange} />
         </div>
         <div className="form-group">
           <label htmlFor="url">URL</label>
@@ -109,7 +116,7 @@ export default function EventForm(props = {
             value={formData.content}
           />
         </div>
-        <div className="row">
+        <div className="row my-4">
           <div className="col col-6">
             <button onClick={handleCancel} className="btn btn-secondary mx-1">
               Cancel

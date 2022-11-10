@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function DashboardSidebar() {
     const navItems = [
         {
@@ -29,7 +27,7 @@ export default function DashboardSidebar() {
     
     const renderNavList = (items) => (
         items.map((item) => (
-            <li className="nav-item">
+            <li className="nav-item" key={item.title}>
                 <a className="nav-link" href={item.href}>{item.title}</a>
             </li>
         ))
