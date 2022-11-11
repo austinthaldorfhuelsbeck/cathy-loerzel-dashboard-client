@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-export default function LoginBar({ toggle, setToggle, users, setUser }) {
+export default function LoginBar({ toggle, setToggle, users, setUser, logChange }) {
   // Store error to display upon submit
   const [error, setError] = useState(null)
 
@@ -23,9 +23,10 @@ export default function LoginBar({ toggle, setToggle, users, setUser }) {
     if (user) {
       // check if the password is correct
       if (user.password === formData.password) {
+        setUser(user)
+        logChange(user, true)
         setError(null)
         toggle()
-        setUser(user)
       } else {
         setError("Sorry, that password is incorrect. Please try again.")
       }

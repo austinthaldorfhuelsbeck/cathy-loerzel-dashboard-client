@@ -1,17 +1,28 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import LoginBar from "./LoginBar"
 
-export default function DashboardHeader({ user, users, setUser, handleLogout }) {
+export default function DashboardHeader({ user, users, setUser, logChange }) {
+  // Navigate hook for log out
+  const navigate = useNavigate()
+  
   // Handle show/hide login bar
   const [isLogin, setIsLogin] = useState(false)
   
   // Top left greets user when signed in
-  const personalizedIntro = user ? "Hello, " + user.name + "!" : "Admin Dashboard"
+  const personalizedIntro = user ? "Hello, " + user.first_name + "!" : "Admin Dashboard"
 
   // Search bar renders when signed in
   const SearchBar = ({ user }) => user ? (
     <input className="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" />
   ) : ""
+
+  // Log out button functionality
+  const handleLogout = () => {
+    logChange(user, false)
+    setUser(null)
+    navigate("/")
+  }
   
   // Sign in button changes to sign out when signed in
   const SignInButton = ({ isLogin, setIsLogin }) => {
@@ -30,7 +41,8 @@ export default function DashboardHeader({ user, users, setUser, handleLogout }) 
     toggle: isLogin,
     setToggle: setIsLogin,
     setUser: setUser,
-    users: users
+    users: users,
+    logChange: logChange
   }
 
   return (

@@ -3,6 +3,7 @@
  * The default values is overridden by the `API_BASE_URL` environment variable.
  */
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000"
+const API_AUTH_URL = process.env.REACT_APP_API_AUTH_URL || "http://localhost:5432"
 
 /**
  * Defines the default headers for these functions to work with `json-server`
@@ -178,3 +179,36 @@ export async function deleteBlog(blogId, signal) {
   const options = { method: "DELETE", signal }
   return await fetchJson(url, options)
 }
+
+//// AUTH ////
+
+/**
+* Retrieves all existing users.
+* @returns {Promise<[user]>}
+*  a promise that resolves to a possibly empty array of user saved in the database.
+*/
+
+export async function listUsers(params, signal) {
+  const url = new URL(`${API_AUTH_URL}/users`)
+  Object.entries(params).forEach(([key, value]) =>
+    url.searchParams.append(key, value.toString())
+  )
+  return await fetchJson(url, { headers, signal }, [])
+ }
+ 
+ /**
+ * Retrieves a single existing user.
+ * @returns {Promise<[user]>}
+ *  a promise that resolves to a user saved in the database.
+ */
+ 
+ export async function updateUser(updatedUser, signal) {
+   const url = new URL(`${API_AUTH_URL}/users/${updatedUser.user_id}`)
+   const options = {
+     method: "PUT",
+     headers,
+     body: JSON.stringify(updatedUser),
+     signal,
+   }
+   return await fetchJson(url, options)
+ }

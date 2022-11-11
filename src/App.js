@@ -1,34 +1,50 @@
 import React, { useEffect, useState } from "react"
-import { useNavigate, Outlet } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 import DashboardHeader from "./components/Headers/DashboardHeader"
 import DashboardSidebar from "./components/Sidebars/DashboardSidebar"
-import usersFromAPI from "./data/data"
+
+import { listUsers, updateUser } from "./utils/api"
 
 import "./App.css"
 
 export default function App() {
-  // Navigate hook for log out
-  const navigate = useNavigate()
+
 
   // State for users and currently logged in user
   const [users, setUsers] = useState([])
   const [user, setUser] = useState(null)
+  // State for API errors
+  const [err, setErr] = useState(null)
 
   // Load list of users
-  useEffect(() => {
-    setUsers(usersFromAPI)
-    setUser(users.find((u) => u.isLoggedIn))
-  }, [])
+  const loadUsers = () => {
+    const abortController = new AbortController()
+    setErr(null)
 
-  // Log in button functionality
-  const handleLogout = () => {
-    setUser(null)
-    navigate("/")
+    listUsers(abortController.signal)
+      .then(res => res.data)
+      .then((res) => {
+        setUsers(res)
+        const user = res.find((u) => u.isLoggedIn)
+        if (user) setUser(user)
+      })
+      .catch(setErr)
+  }
+  useEffect(loadUsers, [])
+
+  // Method to log in and out
+  const logChange = (user, value) => {
+    const abortController = new AbortController()
+    setErr(null)
+
+    if (user) {
+      updateUser({ ...user, isLoggedIn: value }, abortController.signal)
+    }
   }
 
   // Default for unauthenticated users
   const Home = ({ user }) => (user === null) || (user === undefined)
-    ? <h2 className="text-center py-5">You must be signed in to view that.</h2>
+    ? ""
     : <Dashboard />
 
   // Dashboard for authenticated users
@@ -48,11 +64,12 @@ export default function App() {
     user: user,
     users: users,
     setUser: setUser,
-    handleLogout: handleLogout
+    logChange: logChange
   }
 
   return (
     <div>
+      {err}
       <DashboardHeader { ...props } />
       <Home user={user} />
     </div>
