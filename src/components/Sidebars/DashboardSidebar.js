@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function DashboardSidebar() {
     const navItems = [
         {
@@ -26,10 +24,17 @@ export default function DashboardSidebar() {
             href: "/events/new"
         }
     ]
+
+    const adminItems = [
+        {
+            title: "Users",
+            href: "/admin/users"
+        }
+    ]
     
     const renderNavList = (items) => (
         items.map((item) => (
-            <li className="nav-item">
+            <li className="nav-item" key={item.title}>
                 <a className="nav-link" href={item.href}>{item.title}</a>
             </li>
         ))
@@ -47,6 +52,7 @@ export default function DashboardSidebar() {
         <div className="sidebar-sticky">
             {renderNavSection("View", navItems)}
             {renderNavSection("Create", createItems)}
+            {renderNavSection("Admin", adminItems)}
         </div>
       </nav>
     );

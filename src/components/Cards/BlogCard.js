@@ -1,9 +1,8 @@
-import React from 'react';
 import { Link } from "react-router-dom";
 
 export default function BlogCard({ blog }) {
-  const blogDateFormat = (
-    new Date(blog.date).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"})
+  const formatDate = (date) => (
+    new Date(date).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"})
   );
 
   const shortBlogText = blog.text.length < 100 ? blog.text: blog.text.slice(0, 100) + "...";
@@ -16,7 +15,7 @@ export default function BlogCard({ blog }) {
           <Link to={`/blogs/${blog.blog_id}`}>
             <h3 className="card-title mb-0">{blog.title}</h3>
           </Link>
-          <div className="mb-1 text-muted">{blogDateFormat}</div>
+          <div className="card-subtitle mb-1 text-muted">{formatDate(blog.date)}</div>
           <p className="card-text mb-auto">
             {shortBlogText}
           </p>

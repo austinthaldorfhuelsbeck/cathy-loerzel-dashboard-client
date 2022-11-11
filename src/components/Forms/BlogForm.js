@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams, useNavigate, Link } from "react-router-dom"
 import { updateBlog, createBlog, deleteBlog } from "../../utils/api"
 
@@ -92,14 +92,14 @@ export default function BlogForm(props = {
   const textAreaGroup = (name, title, placeholder, value) => (
     <div className="form-group py-1">
       <label htmlFor={name}><strong>{title}</strong></label>
-        <textarea
-          className="form-control my-1"
-          rows="8"
-          placeholder={placeholder}
-          name="text"
-          onChange={handleChange}
-          value={value}
-        />
+      <textarea
+        className="form-control my-1"
+        rows="8"
+        placeholder={placeholder}
+        name="text"
+        onChange={handleChange}
+        value={value}
+      />
     </div>
   )
   const controlGroup = (name, title, options, value) => (
