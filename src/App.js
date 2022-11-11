@@ -27,7 +27,7 @@ export default function App() {
   }
 
   // Default for unauthenticated users
-  const Home = ({ user }) => (user === null)
+  const Home = ({ user }) => (user === null) || (user === undefined)
     ? <h2 className="text-center py-5">You must be signed in to view that.</h2>
     : <Dashboard />
 
