@@ -1,4 +1,4 @@
-export default users = [
+const usersFromAPI = [
   {
     id: 1,
     name: "dev",
@@ -21,3 +21,5 @@ export default users = [
     isLoggedIn: false
   }
 ]
+
+export default usersFromAPI

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import LoginBar from "./LoginBar"
 
-export default function DashboardHeader({ user, setUser, handleLogout }) {
+export default function DashboardHeader({ user, users, setUser, handleLogout }) {
   // Handle show/hide login bar
   const [isLogin, setIsLogin] = useState(false)
   
@@ -26,6 +26,13 @@ export default function DashboardHeader({ user, setUser, handleLogout }) {
     )
   }
 
+  const props = {
+    toggle: isLogin,
+    setToggle: setIsLogin,
+    setUser: setUser,
+    users: users
+  }
+
   return (
     <>
       <nav className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
@@ -37,7 +44,7 @@ export default function DashboardHeader({ user, setUser, handleLogout }) {
           </li>
         </ul>
       </nav>
-    <LoginBar toggle={isLogin} setToggle={setIsLogin} setUser={setUser} />
+    <LoginBar { ...props } />
   </>
   )
 }

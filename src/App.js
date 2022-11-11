@@ -1,7 +1,8 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate, Outlet } from "react-router-dom"
 import DashboardHeader from "./components/Headers/DashboardHeader"
 import DashboardSidebar from "./components/Sidebars/DashboardSidebar"
+import usersFromAPI from "./data/data"
 
 import "./App.css"
 
@@ -9,8 +10,14 @@ export default function App() {
   // Navigate hook for log out
   const navigate = useNavigate()
 
-  // Logged in, show login bar state
+  // State for users and currently logged in user
+  const [users, setUsers] = useState([])
   const [user, setUser] = useState(null)
+
+  // Load list of users
+  useEffect(() => {
+    setUsers(usersFromAPI)
+  }, [])
 
   // Log in button functionality
   const handleLogout = () => {
@@ -19,13 +26,9 @@ export default function App() {
   }
 
   // Default for unauthenticated users
-  const Home = ({ user }) => {
-    console.log("User: ", user)
-    if (user === null) {
-      return <h2 className="text-center py-5">You must be logged in to view that.</h2>
-    }
-    return <Dashboard />
-  }
+  const Home = ({ user }) => (user === null)
+    ? <h2 className="text-center py-5">You must be logged in to view that.</h2>
+    : <Dashboard />
 
   // Dashboard for authenticated users
   const Dashboard = () => (
@@ -42,6 +45,7 @@ export default function App() {
   // Build props
   const props = {
     user: user,
+    users: users,
     setUser: setUser,
     handleLogout: handleLogout
   }
