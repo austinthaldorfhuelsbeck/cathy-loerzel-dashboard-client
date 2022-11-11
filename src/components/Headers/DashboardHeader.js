@@ -6,7 +6,7 @@ export default function DashboardHeader({ user, users, setUser, handleLogout }) 
   const [isLogin, setIsLogin] = useState(false)
   
   // Top left greets user when signed in
-  const personalizedIntro = user ? "Hello, " + user.name + "!" : "Dashboard"
+  const personalizedIntro = user ? "Hello, " + user.name + "!" : "Admin Dashboard"
 
   // Search bar renders when signed in
   const SearchBar = ({ user }) => user ? (

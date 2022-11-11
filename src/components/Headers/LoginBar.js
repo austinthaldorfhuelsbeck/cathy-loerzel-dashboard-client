@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 export default function LoginBar({ toggle, setToggle, users, setUser }) {
-  // Store error and success to display upon submit
+  // Store error to display upon submit
   const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
 
   // Load initial blank form
   const initialFormData = {
@@ -25,7 +24,6 @@ export default function LoginBar({ toggle, setToggle, users, setUser }) {
       // check if the password is correct
       if (user.password === formData.password) {
         setError(null)
-        setSuccess(true)
         toggle()
         setUser(user)
       } else {
@@ -73,11 +71,6 @@ export default function LoginBar({ toggle, setToggle, users, setUser }) {
           </div>
         </div>
       </form>
-      {success && (
-        <div className="alert alert-success" role="alert">
-          Successfully signed in.
-        </div>
-      )}
       {error && (
         <div className="alert alert-danger" role="alert">
           {`Error: ${error}`}

@@ -18,7 +18,7 @@ const usersFromAPI = [
     name: "Austin",
     email: "austinthaldorfhuelsbeck@gmail.com",
     password: "Bummerdude666@",
-    isLoggedIn: false
+    isLoggedIn: true
   }
 ]
 

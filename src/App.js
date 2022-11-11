@@ -17,6 +17,7 @@ export default function App() {
   // Load list of users
   useEffect(() => {
     setUsers(usersFromAPI)
+    setUser(users.find((u) => u.isLoggedIn))
   }, [])
 
   // Log in button functionality
@@ -27,7 +28,7 @@ export default function App() {
 
   // Default for unauthenticated users
   const Home = ({ user }) => (user === null)
-    ? <h2 className="text-center py-5">You must be logged in to view that.</h2>
+    ? <h2 className="text-center py-5">You must be signed in to view that.</h2>
     : <Dashboard />
 
   // Dashboard for authenticated users
