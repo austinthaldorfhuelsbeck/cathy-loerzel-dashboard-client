@@ -8,6 +8,11 @@ h3 {
     color: #212529;
 }
 
+/* Utilities */
+.cursor-pointer {
+  cursor: pointer;
+}
+
 /* Auth */
 .Auth-form-container {
     display: flex;
