@@ -4,6 +4,7 @@ import App from "./App"
 import Dashboard from "./layouts/Dashboard"
 import Event from "./layouts/Event"
 import Blog from "./layouts/Blog"
+import Users from "./layouts/Users"
 
 // components
 import BlogForm from "./components/Forms/BlogForm"
@@ -27,6 +28,9 @@ render(
           <Route path="new" element={<EventForm />} />
           <Route path=":eventId" element={<Event />} />
           <Route index element={<EventsGrid />} />
+        </Route>
+        <Route path="admin">
+          <Route path="users" element={<Users />} />
         </Route>
       </Route>
       <Route path="*" element={<h1>NOT FOUND</h1>} />

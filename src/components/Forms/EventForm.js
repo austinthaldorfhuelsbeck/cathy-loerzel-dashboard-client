@@ -103,20 +103,6 @@ export default function EventForm(props = {
       />
     </div>
   )
-  const controlGroup = (name, title, options, value) => (
-    <div className="form-group py-1">
-      <label htmlFor={name}><strong>{title}</strong></label>
-      <select
-        className="form-control my-1"
-        name={name}
-        onChange={handleChange}
-        value={value}
-      >
-        <option>{`--Choose a ${name}--`}</option>
-        {options.map((option) => <option key={option}>{option}</option>)}
-      </select>
-    </div>
-  )
 
   return (
     <>
