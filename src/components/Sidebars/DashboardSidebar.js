@@ -24,13 +24,6 @@ export default function DashboardSidebar() {
             href: "/events/new"
         }
     ]
-
-    const adminItems = [
-        {
-            title: "Users",
-            href: "/admin/users"
-        }
-    ]
     
     const renderNavList = (items) => (
         items.map((item) => (
@@ -52,7 +45,6 @@ export default function DashboardSidebar() {
         <div className="sidebar-sticky">
             {renderNavSection("View", navItems)}
             {renderNavSection("Create", createItems)}
-            {renderNavSection("Admin", adminItems)}
         </div>
       </nav>
     );
