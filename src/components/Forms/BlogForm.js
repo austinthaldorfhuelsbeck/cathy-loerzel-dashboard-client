@@ -1,5 +1,9 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useParams, useNavigate, Link } from "react-router-dom"
+
+import { useQuill } from "react-quilljs"
+import "quill/dist/quill.snow.css"
+
 import { updateBlog, createBlog, deleteBlog } from "../../utils/api"
 
 export default function BlogForm(props = {
@@ -18,6 +22,8 @@ export default function BlogForm(props = {
   url: ""
 }) {
 
+  const { quill, quillRef } = useQuill()
+
   // Find the blog ID, if it exists
   const { blogId } = useParams()
   // Navigate hook for submit and cancel
@@ -30,7 +36,14 @@ export default function BlogForm(props = {
   // Load initial data if updating
   // (Blank if creating new)
   const [formData, setFormData] = useState({})
-  useEffect(() => setFormData(props), [props])
+  useEffect(() => {
+    setFormData(props)
+  }, [props])
+  useEffect(() => {
+    if (quill) {
+      quill.clipboard.dangerouslyPasteHTML(formData.content);
+    }
+  }, [quill, formData.content]);
 
   //// HANDLERS ////
 
@@ -38,12 +51,24 @@ export default function BlogForm(props = {
   // depending if there is a param found
   const handleSubmit = (e) => {
     e.preventDefault()
+    // update or create
     if (blogId) {
-      updateBlog({ ...formData })
+      updateBlog({
+        ...formData,
+        blog_id: formData.title.replace(/\s/g, "-").toLowerCase(), // append blog ID if left blank
+        content: quill.root.innerHTML // append formatted html from quill
+      })
         .then((blog) => setSuccess(blog.data.blog_id))
-        .catch((err) => setError(err.message))
+        .catch((err) => {
+          setError(err.message)
+          alert(err.message)
+        })
     } else {
-      createBlog({ ...formData })
+      createBlog({
+        ...formData,
+        blog_id: formData.title.replace(/\s/g, "-").toLowerCase(), // append blog ID if left blank
+        content: quill.root.innerHTML // append formatted html from quill
+      })
         .then((blog) => setSuccess(blog.data.blog_id))
         .catch((err) => setError(err.message))
     }
@@ -94,11 +119,26 @@ export default function BlogForm(props = {
       <label htmlFor={name}><strong>{title}</strong></label>
       <textarea
         className="form-control my-1"
-        rows="8"
+        type="text"
+        rows="5"
         placeholder={placeholder}
         name="text"
         onChange={handleChange}
         value={value}
+      />
+    </div>
+  )
+  const textHtmlGroup = (name, title, value) => (
+    <div
+      className="form-group py-1"
+      // style={{ width: 500, height: 200 }}
+    >
+      <label htmlFor={name}><strong>{title}</strong></label>
+      <div
+        ref={quillRef}
+        name="content"
+        value={value}
+        onChange={handleChange}
       />
     </div>
   )
@@ -142,12 +182,12 @@ export default function BlogForm(props = {
           <div className="row">
             <h3>Basic Info</h3>
             <hr />
-            <div className="col col-md-6">
+            <div className="col col-md-8">
               {inputGroup("text", "title", "Title *", "Title of the blog post", formData.title)}
               {inputGroup("text", "blog_id", "Blog ID", "ID used in the blog's URL", formData.blog_id)}
               <p className="text-muted"><em>Automatically generated from the title if left blank.</em></p>
             </div>
-            <div className="col col-md-6">
+            <div className="col col-md-4">
               {controlGroup("category", "Category *", ["writing", "podcasts", "teaching"], formData.category)}
               {controlGroup(
                 "topic",
@@ -172,13 +212,13 @@ export default function BlogForm(props = {
             <p className="text-muted"><em>This could be the first paragraph of the post. Automatically shortened to 250 characters for the preview.</em></p>
           </div>
 
-          <div className="row">
+          <div className="row pb-5">
             <h3>Content</h3>
             <hr />
-            {textAreaGroup("content", "", "HTML content of the post.", formData.content)}
+            {textHtmlGroup("content", "", formData.content)}
           </div>
 
-          <div className="row py-3">
+          <div className="row py-5">
             <div className="col col-6">
               <button onClick={handleCancel} className="btn btn-secondary mx-1">
                 Cancel
