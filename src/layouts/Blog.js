@@ -11,8 +11,11 @@ export default function Blog() {
   const [blog, setBlog] = useState({})
   useEffect(() => {
     async function loadBlog() {
-      const blogFromAPI = await readBlog(blogId)
-      setBlog(blogFromAPI.data)
+      const response = await readBlog(blogId)
+      const blog = response.data
+      // date needs to be reformatted to display with html date format
+      blog.date = blog.date.toString().slice(0, 10)
+      setBlog(blog)
     }
     loadBlog()
   }, [blogId])

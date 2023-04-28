@@ -76,12 +76,12 @@ export default function BlogForm(props = {
   )
 
   // Form group classes
-  const inputGroup = (name, title, placeholder, value) => (
+  const inputGroup = (type, name, title, placeholder, value) => (
     <div className="form-group py-1">
       <label htmlFor={name}><strong>{title}</strong></label>
       <input
         className="form-control my-1"
-        type="text"
+        type={type}
         placeholder={placeholder}
         name={name}
         onChange={handleChange}
@@ -125,78 +125,80 @@ export default function BlogForm(props = {
     </>
   )
 
-  return (
-    <>
-      {headerImage}
-      <form className="p-5" onSubmit={handleSubmit} noValidate>
+  // console.log(formData)
 
-        <div className="row">
-          <h3>Basic Info</h3>
-          <hr />
-          <div className="col col-md-6">
-            {inputGroup("title", "Title *", "Title of the blog post", formData.title)}
-            {inputGroup("blog_id", "Blog ID", "ID used in the blog's URL", formData.blog_id)}
-            <p className="text-muted"><em>Automatically generated from the title if left blank.</em></p>
+  return success ?
+    (
+      <div className="alert alert-success" role="alert">
+        {`Success! Blog ID: ${success}`}
+        <h3><Link to="/blogs">Back to All</Link></h3>
+      </div>
+    ) :
+    (
+      <>
+        {headerImage}
+        <form className="p-5" onSubmit={handleSubmit} noValidate>
+
+          <div className="row">
+            <h3>Basic Info</h3>
+            <hr />
+            <div className="col col-md-6">
+              {inputGroup("text", "title", "Title *", "Title of the blog post", formData.title)}
+              {inputGroup("text", "blog_id", "Blog ID", "ID used in the blog's URL", formData.blog_id)}
+              <p className="text-muted"><em>Automatically generated from the title if left blank.</em></p>
+            </div>
+            <div className="col col-md-6">
+              {controlGroup("category", "Category *", ["writing", "podcasts", "teaching"], formData.category)}
+              {controlGroup(
+                "topic",
+                "Topic *",
+                ["redeeming-heartache", "leadership", "sexual-abuse", "allender-methodology", "spiritual-warfare"],
+                formData.topic
+              )}
+              {inputGroup("date", "date", "Date", "", formData.date)}
+              <p className="text-muted"><em>Defaults to today if left blank.</em></p>
+            </div>
           </div>
-          <div className="col col-md-6">
-            {controlGroup("category", "Category *", ["writing", "podcasts", "teaching"], formData.category)}
-            {controlGroup(
-              "topic",
-              "Topic *",
-              ["redeeming-heartache", "leadership", "sexual-abuse", "allender-methodology", "spiritual-warfare"],
-              formData.topic
-            )}
-            {inputGroup("date", "Date", "e.g. September 1, 1991", formData.date)}
-            <p className="text-muted"><em>Defaults to today if left blank.</em></p>
+
+          <div className="row">
+            <h3>Details</h3>
+            <hr />
+            {inputGroup("text", "img", "Image URL *", "Full URL of the hero image", formData.img)}
+            <p className="text-muted"><em>Enter the address for the thumbnail image that will display with the post.</em></p>
+            {inputGroup("text", "url", "Post URL *", "Clickthrough URL for the post", formData.url)}
+            <p className="text-muted"><em>When the thumbnail image is clicked, it links here.</em></p>
+            {conditionalURL}
+            {textAreaGroup("text", "Description *", "A brief description of the post.", formData.text)}
+            <p className="text-muted"><em>This could be the first paragraph of the post. Automatically shortened to 250 characters for the preview.</em></p>
           </div>
-        </div>
 
-        <div className="row">
-          <h3>Details</h3>
-          <hr />
-          {inputGroup("img", "Image URL *", "Full URL of the hero image", formData.img)}
-          <p className="text-muted"><em>Enter the address for the thumbnail image that will display with the post.</em></p>
-          {inputGroup("url", "Post URL *", "Clickthrough URL for the post", formData.url)}
-          <p className="text-muted"><em>When the thumbnail image is clicked, it links here.</em></p>
-          {conditionalURL}
-          {textAreaGroup("text", "Description *", "A brief description of the post.", formData.text)}
-          <p className="text-muted"><em>This could be the first paragraph of the post. Automatically shortened to 250 characters for the preview.</em></p>
-        </div>
-
-        <div className="row">
-          <h3>Content</h3>
-          <hr />
-          {textAreaGroup("content", "", "HTML content of the post.", formData.content)}
-        </div>
-
-        <div className="row py-3">
-          <div className="col col-6">
-            <button onClick={handleCancel} className="btn btn-secondary mx-1">
-              Cancel
-            </button>
-            <button type="submit" className="btn btn-dark mx-1">
-              Submit
-            </button>
+          <div className="row">
+            <h3>Content</h3>
+            <hr />
+            {textAreaGroup("content", "", "HTML content of the post.", formData.content)}
           </div>
-          <div className="col col-6">
-            <button onClick={handleDelete} className="btn btn-danger mx-1">
-              Delete
-            </button>
-          </div>
-        </div>
-      </form>
 
-      {success && (
-        <div className="alert alert-success" role="alert">
-          {`Success! Blog ID: ${success}`}
-          <h3><Link to="/blogs">Back to All</Link></h3>
-        </div>
-      )}
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          {`Error: ${error}`}
-        </div>
-      )}
-    </>
-  )
+          <div className="row py-3">
+            <div className="col col-6">
+              <button onClick={handleCancel} className="btn btn-secondary mx-1">
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-dark mx-1">
+                Submit
+              </button>
+            </div>
+            <div className="col col-6">
+              <button onClick={handleDelete} className="btn btn-danger mx-1">
+                Delete
+              </button>
+            </div>
+          </div>
+        </form>
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {`Error: ${error}`}
+          </div>
+        )}
+      </>
+    )
 }

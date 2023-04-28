@@ -15,10 +15,10 @@ export default function ItemsList({ selectedList, items, preview }) {
   // Choose the appropriate list to render
   return (
     <>
-      {items.map((item) => (
+      {items.map((item, i) => (
         selectedList === "blogs" ? 
-        <BlogCard blog={item} /> : 
-        <EventCard event={item} />
+        <BlogCard blog={item} key={i} /> : 
+        <EventCard event={item} key={i} />
       ))}
       {preview && <LoadMoreButton url={selectedList} />}
     </>
