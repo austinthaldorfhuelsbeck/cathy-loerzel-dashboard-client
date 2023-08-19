@@ -130,6 +130,7 @@ export async function updateBlog(updatedBlog, signal) {
     body: JSON.stringify(event),
     signal,
   }
+  console.log(options.body)
   return await fetchJson(url, options);
 }
 

@@ -5,6 +5,9 @@ export default function EventCard({ event }) {
     new Date(date).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"})
   );
 
+  const formatContent = (content) =>
+    event.content.length < 200 ? event.content : event.content.slice(0, 200) + "..."
+
   return (
     <Link to={`/events/${event.event_id}`}>
       <div className="card flex-md-row mb-4 box-shadow h-md-250">
@@ -13,7 +16,7 @@ export default function EventCard({ event }) {
           <h3 className="card-title mb-0">{event.name}</h3>
           <div className="card-subtitle mb-1 text-muted">{formatDate(event.date)}</div>
           <p className="card-text">
-            {event.content.length < 200 ? event.content : event.content.slice(0, 200) + "..."}
+            {event.content && formatContent(event.content)}
           </p>
         </div>
       </div>

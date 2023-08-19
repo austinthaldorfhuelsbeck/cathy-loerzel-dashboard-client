@@ -97,7 +97,7 @@ export default function EventForm(props = {
         className="form-control my-1"
         rows="8"
         placeholder={placeholder}
-        name="text"
+        name="content"
         onChange={handleChange}
         value={value}
       />
