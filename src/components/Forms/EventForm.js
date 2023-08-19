@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react"
-import DatePicker from "react-datepicker"
 import { useParams, useNavigate, Link } from "react-router-dom"
+
+import { useQuill } from "react-quilljs"
+import "quill/dist/quill.snow.css"
+
 import { updateEvent, createEvent, deleteEvent } from "../../utils/api"
 
 import "react-datepicker/dist/react-datepicker.css"
@@ -8,9 +11,12 @@ import "react-datepicker/dist/react-datepicker.css"
 export default function EventForm(props = {
   event_id: null,
   name: "",
+  date: "",
   content: "",
   url: ""
 }) {
+
+  const { quill, quillRef } = useQuill()
 
   // Find the event ID, if it exists
   const { eventId } = useParams()
@@ -24,11 +30,12 @@ export default function EventForm(props = {
   // Load initial data if updating
   // (Blank if creating new)
   const [formData, setFormData] = useState({})
-  const [startDate, setStartDate] = useState(new Date())
   useEffect(() => {
     setFormData(props)
-    if (props.date) setStartDate(new Date(props.date))
-  }, [props])
+    if (quill) {
+      quill.clipboard.dangerouslyPasteHTML(formData.content)
+    }
+  }, [quill, formData.content, props])
 
   //// HANDLERS ////
 
@@ -36,13 +43,18 @@ export default function EventForm(props = {
   // depending if there is a param found
   const handleSubmit = (e) => {
     e.preventDefault()
-    formData.date = startDate
     if (eventId) {
-      updateEvent({ ...formData })
+      updateEvent({
+        ...formData,
+        content: quill.root.innerHTML // append formatted html from quill
+      })
         .then((event) => setSuccess(event.data.event_id))
         .catch((err) => setError(err.message))
     } else {
-      createEvent({ ...formData })
+      createEvent({
+        ...formData,
+        content: quill.root.innerHTML // append formatted html from quill
+      })
         .then((event) => setSuccess(event.data.event_id))
         .catch((err) => setError(err.message))
     }
@@ -63,13 +75,6 @@ export default function EventForm(props = {
       [target.name]: target.value
     })
   }
-  const handleDateChange = (date) => {
-    setStartDate(date)
-    setFormData({
-      ...formData,
-      date: startDate
-    })
-  }
   // Cancel navigates home
   const handleCancel = (e) => {
     e.preventDefault()
@@ -77,12 +82,12 @@ export default function EventForm(props = {
   }
 
   // Form group classes
-  const inputGroup = (name, title, placeholder, value) => (
+  const inputGroup = (type, name, title, placeholder, value) => (
     <div className="form-group py-1">
       <label htmlFor={name}><strong>{title}</strong></label>
       <input
         className="form-control my-1"
-        type="text"
+        type={type}
         placeholder={placeholder}
         name={name}
         onChange={handleChange}
@@ -90,31 +95,18 @@ export default function EventForm(props = {
       />
     </div>
   )
-  const textAreaGroup = (name, title, placeholder, value) => (
-    <div className="form-group py-1">
+  const textHtmlGroup = (name, title, value) => (
+    <div
+      className="form-group py-1"
+      // style={{ width: 500, height: 200 }}
+    >
       <label htmlFor={name}><strong>{title}</strong></label>
-      <textarea
-        className="form-control my-1"
-        rows="8"
-        placeholder={placeholder}
+      <div
+        ref={quillRef}
         name="content"
-        onChange={handleChange}
         value={value}
+        onChange={handleChange}
       />
-    </div>
-  )
-  const controlGroup = (name, title, options, value) => (
-    <div className="form-group py-1">
-      <label htmlFor={name}><strong>{title}</strong></label>
-      <select
-        className="form-control my-1"
-        name={name}
-        onChange={handleChange}
-        value={value}
-      >
-        <option>{`--Choose a ${name}--`}</option>
-        {options.map((option) => <option key={option}>{option}</option>)}
-      </select>
     </div>
   )
 
@@ -123,19 +115,18 @@ export default function EventForm(props = {
       <form className="p-5" onSubmit={handleSubmit} noValidate>
 
         <div className="row">
-          {inputGroup("name", "Event Name *", "e.g. Redeeming Heartache Conference", formData.name)}
+          {inputGroup("text", "name", "Event Name *", "e.g. Redeeming Heartache Conference", formData.name)}
         </div>
         <div className="row">
           <div className="col col-md-3 py-1">
-            <label><strong>Date *</strong></label>
-            <DatePicker className="form-control" selected={startDate} onChange={handleDateChange} />
+            {inputGroup("date", "date", "Date *", "", formData.date)}
           </div>
           <div className="col">
-            {inputGroup("url", "URL *", "e.g. https://theallendercenter.org/events/2726298", formData.url)}
+            {inputGroup("text", "url", "URL *", "e.g. https://theallendercenter.org/events/2726298", formData.url)}
           </div>
         </div>
-        <div className="row">
-          {textAreaGroup("content", "Description *", "Add a description of the event here.", formData.content)}
+        <div className="row pb-5">
+          {textHtmlGroup("content", "Content", formData.content)}
         </div>
         <div className="row my-4">
           <div className="col col-6">
