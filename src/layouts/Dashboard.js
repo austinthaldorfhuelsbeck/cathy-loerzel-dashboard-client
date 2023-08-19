@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { useSearchParams } from "react-router-dom"
 
 // API methods
 import { listBlogs, listEvents } from "../utils/api"
@@ -8,6 +9,8 @@ import ItemsList from "../components/Lists/ItemsList"
 
 export default function Dashboard() {
   
+  const [searchParams] = useSearchParams()
+
   // Load all blogs and events
 
   const [blogs, setBlogs] = useState([])
@@ -15,15 +18,31 @@ export default function Dashboard() {
   useEffect(() => {
     async function loadBlogs() {
       const response = await listBlogs()
-      setBlogs(response.data)
+      const data = response.data
+      if (searchParams.get('q')) {
+        setBlogs(data.filter((blog) => {
+          return (blog.title.toLowerCase().includes(searchParams.get('q').toLowerCase())) ||
+            (blog.text.toLowerCase().includes(searchParams.get('q').toLowerCase()))
+        }))
+      } else {
+        setBlogs(data)
+      }
     }
     async function loadEvents() {
       const response = await listEvents()
-      setEvents(response.data)
+      const data = response.data
+      if (searchParams.get('q')) {
+        setEvents(data.filter((event) => {
+          return (event.name.toLowerCase().includes(searchParams.get('q').toLowerCase())) ||
+            (event.content.toLowerCase().includes(searchParams.get('q').toLowerCase()))
+        }))
+      } else {
+        setBlogs(data)
+      }
     }
     loadBlogs()
     loadEvents()
-  }, [])
+  }, [searchParams])
 
   return (
     <div className="container home">
