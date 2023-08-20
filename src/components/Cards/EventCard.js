@@ -6,7 +6,7 @@ export default function EventCard({ event }) {
   );
 
   const formatContent = (content) =>
-    event.content.length < 200 ? event.content : event.content.slice(0, 200) + "..."
+    content.length < 200 ? content : content.slice(0, 200) + "..."
 
   return (
     <Link to={`/events/${event.event_id}`}>

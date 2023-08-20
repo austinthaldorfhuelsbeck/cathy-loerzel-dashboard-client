@@ -40,10 +40,10 @@ export default function BlogForm(props = {
     setFormData(props)
   }, [props])
   useEffect(() => {
-    if (quill) {
+    if (quill && blogId) {
       quill.clipboard.dangerouslyPasteHTML(formData.content);
     }
-  }, [quill, formData.content]);
+  }, [quill, formData.content, blogId]);
 
   //// HANDLERS ////
 
@@ -51,11 +51,17 @@ export default function BlogForm(props = {
   // depending if there is a param found
   const handleSubmit = (e) => {
     e.preventDefault()
+    // append blog ID if left blank
+    if (!formData.blog_id) {
+      setFormData({
+        ...formData,
+        blog_id: formData.title.replace(/\s/g, "-").toLowerCase()
+      })
+    }
     // update or create
     if (blogId) {
       updateBlog({
         ...formData,
-        blog_id: formData.title.replace(/\s/g, "-").toLowerCase(), // append blog ID if left blank
         content: quill.root.innerHTML // append formatted html from quill
       })
         .then((blog) => setSuccess(blog.data.blog_id))
@@ -66,7 +72,6 @@ export default function BlogForm(props = {
     } else {
       createBlog({
         ...formData,
-        blog_id: formData.title.replace(/\s/g, "-").toLowerCase(), // append blog ID if left blank
         content: quill.root.innerHTML // append formatted html from quill
       })
         .then((blog) => setSuccess(blog.data.blog_id))

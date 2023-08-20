@@ -32,10 +32,10 @@ export default function EventForm(props = {
   const [formData, setFormData] = useState({})
   useEffect(() => {
     setFormData(props)
-    if (quill) {
+    if (quill && eventId ) {
       quill.clipboard.dangerouslyPasteHTML(formData.content)
     }
-  }, [quill, formData.content, props])
+  }, [quill, formData.content, props, eventId])
 
   //// HANDLERS ////
 
