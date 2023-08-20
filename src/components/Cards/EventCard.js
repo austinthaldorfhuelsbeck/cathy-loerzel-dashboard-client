@@ -5,8 +5,12 @@ export default function EventCard({ event }) {
     new Date(date).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"})
   );
 
-  const formatContent = (content) =>
-    content.length < 200 ? content : content.slice(0, 200) + "..."
+  const formatContent = (content) => {
+    let result = ""
+    result = content.replace( /(<([^>]+)>)/ig, "")
+    if (result.length < 200) return result
+    return result.slice(0, 200) + "..."
+  }
 
   return (
     <Link to={`/events/${event.event_id}`}>
