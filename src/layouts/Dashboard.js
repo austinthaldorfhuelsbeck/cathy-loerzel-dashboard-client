@@ -19,10 +19,10 @@ export default function Dashboard() {
     async function loadBlogs() {
       const response = await listBlogs()
       const data = response.data
-      if (searchParams.get('q')) {
+      if (searchParams.get('query')) {
         setBlogs(data.filter((blog) => {
-          return (blog.title.toLowerCase().includes(searchParams.get('q').toLowerCase())) ||
-            (blog.text.toLowerCase().includes(searchParams.get('q').toLowerCase()))
+          return (blog.title.toLowerCase().includes(searchParams.get('query').toLowerCase())) ||
+            (blog.text.toLowerCase().includes(searchParams.get('query').toLowerCase()))
         }))
       } else {
         setBlogs(data)
@@ -31,13 +31,13 @@ export default function Dashboard() {
     async function loadEvents() {
       const response = await listEvents()
       const data = response.data
-      if (searchParams.get('q')) {
+      if (searchParams.get('query')) {
         setEvents(data.filter((event) => {
-          return (event.name.toLowerCase().includes(searchParams.get('q').toLowerCase())) ||
-            (event.content.toLowerCase().includes(searchParams.get('q').toLowerCase()))
+          return (event.name.toLowerCase().includes(searchParams.get('query').toLowerCase())) ||
+            (event.content.toLowerCase().includes(searchParams.get('query').toLowerCase()))
         }))
       } else {
-        setBlogs(data)
+        setEvents(data)
       }
     }
     loadBlogs()

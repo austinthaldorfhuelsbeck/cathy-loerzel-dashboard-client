@@ -5,7 +5,8 @@ export default function BlogCard({ blog }) {
     new Date(date).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"})
   );
 
-  const shortBlogText = blog.text.length < 100 ? blog.text: blog.text.slice(0, 100) + "...";
+  let shortBlogText = ""
+  if (blog.text) shortBlogText = blog.text.length < 100 ? blog.text: blog.text.slice(0, 100) + "...";
 
   return (
       <div className="card flex-md-row mb-4 box-shadow h-md-250">
