@@ -11,6 +11,7 @@ import "react-datepicker/dist/react-datepicker.css"
 export default function EventForm(props = {
   event_id: null,
   name: "",
+  type: "",
   date: "",
   content: "",
   url: ""
@@ -109,13 +110,37 @@ export default function EventForm(props = {
       />
     </div>
   )
+  const controlGroup = (name, title, options, value) => (
+    <div className="form-group py-1">
+      <label htmlFor={name}><strong>{title}</strong></label>
+      <select
+        className="form-control my-1"
+        name={name}
+        onChange={handleChange}
+        value={value}
+      >
+        <option>{`--Choose a ${name}--`}</option>
+        {options.map((option) => <option key={option}>{option}</option>)}
+      </select>
+    </div>
+  )
 
   return (
     <>
       <form className="p-5" onSubmit={handleSubmit} noValidate>
 
         <div className="row">
-          {inputGroup("text", "name", "Event Name *", "e.g. Redeeming Heartache Conference", formData.name)}
+          <div className="col col-md-8 py-1">
+            {inputGroup("text", "name", "Event Name *", "e.g. Redeeming Heartache Conference", formData.name)}
+          </div>
+          <div className="col col-md-4 py-1">
+            {controlGroup(
+              "type",
+              "Type *",
+              ["retreats", "conferences", "coaching", "intensives"],
+              formData.type
+            )}
+          </div>
         </div>
         <div className="row">
           <div className="col col-md-3 py-1">
@@ -128,6 +153,17 @@ export default function EventForm(props = {
         <div className="row pb-5">
           {textHtmlGroup("content", "Content", formData.content)}
         </div>
+        {success && (
+          <div className="alert alert-success my-3" role="alert">
+            {`Success! Event ID: ${success}`}
+            <Link to="/events"><h3>Back to All</h3></Link>
+          </div>
+        )}
+        {error && (
+          <div className="alert alert-danger my-3" role="alert">
+            {error}
+          </div>
+        )}
         <div className="row my-4">
           <div className="col col-6">
             <button onClick={handleCancel} className="btn btn-secondary mx-1">
@@ -144,17 +180,6 @@ export default function EventForm(props = {
           </div>
         </div>
       </form>
-      {success && (
-        <div className="alert alert-success" role="alert">
-          {`Success! Event ID: ${success}`}
-          <Link to="/events"><h3>Back to All</h3></Link>
-        </div>
-      )}
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
-        </div>
-      )}
     </>
   )
 }
